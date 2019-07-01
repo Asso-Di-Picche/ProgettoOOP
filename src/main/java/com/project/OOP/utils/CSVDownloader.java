@@ -12,16 +12,13 @@ public class CSVDownloader {
     public static JSONObject getJSONFromURL(String url) throws IOException {
         StringBuilder sb = new StringBuilder();
         int currentChar;
-        InputStream is = new URL(url).openStream();
-        try {
+        try(InputStream is = new URL(url).openStream()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             while ((currentChar = br.read()) != -1){
                 sb.append((char) currentChar);
             }
             JSONObject json = new JSONObject(sb.toString());
             return json;
-        } finally {
-            is.close();
         }
     }
 
