@@ -4,23 +4,42 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.OOP.utils.CSVParser;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.json.BasicJsonParser;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class BaseController {
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
-    String getAllData(){
+    String getAllData(@RequestParam(defaultValue = "") String filter){
         try {
-            ArrayList<AgricultureAid> objects = CSVParser.getDataFromCSV();
+            AgricultureAidCollection objects = CSVParser.getDataFromCSV();
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(objects);
+            return mapper.writeValueAsString(objects.getAgricultureAids());
+        } catch (IOException e){
+            return e.toString();
+        }
+    }
+
+    @RequestMapping(value = "/data", method = RequestMethod.POST, produces="application/json")
+    String getAllDataFiltered(@RequestBody(required = false) String filter){
+        try {
+            AgricultureAidCollection objects = CSVParser.getDataFromCSV();
+            JsonParser jsonParser = new BasicJsonParser();
+            Map<String, Object> jsonMap = null;
+            if(!filter.isEmpty()){
+                jsonMap = jsonParser.parseMap(filter);
+            }
+
+
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(objects.getAgricultureAids());
         } catch (IOException e){
             return e.toString();
         }
@@ -29,8 +48,8 @@ public class BaseController {
     @RequestMapping(value = "/stats", method = RequestMethod.GET, produces="application/json")
     String getStats(@RequestParam String Geo){
         try {
-            ArrayList<AgricultureAid> objects = CSVParser.getDataFromCSV();
-            AgricultureAid foundObj = objects.stream().filter(el -> el.getGeo().equals(Geo)).findFirst().orElse(null);
+            AgricultureAidCollection objects = CSVParser.getDataFromCSV();
+            AgricultureAid foundObj = objects.getAgricultureAids().stream().filter(el -> el.getGeo().equals(Geo)).findFirst().orElse(null);
             HashMap<String, String> result = new HashMap<>();
             if(foundObj != null){
                 result.put("geo", foundObj.getGeo());

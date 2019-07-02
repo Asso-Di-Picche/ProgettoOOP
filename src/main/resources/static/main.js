@@ -29,7 +29,7 @@ Vue.component('data-table', {
                     <td>{{ item['freq'] }}</td>
                     <td>{{ item['geo'] }}</td>
                     <td>{{ item['unit'] }}</td>
-                    <td v-for="el in item['obj']">{{ el }}</td>
+                    <td v-for="el in item['aids']">{{ el }}</td>
                 </tr>
             </table>
         </div>

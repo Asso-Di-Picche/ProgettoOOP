@@ -1,6 +1,7 @@
 package com.project.OOP.utils;
 
 import com.project.OOP.AgricultureAid;
+import com.project.OOP.AgricultureAidCollection;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class CSVParser {
 
-    public static ArrayList<AgricultureAid> getDataFromCSV() throws IOException {
+    public static AgricultureAidCollection getDataFromCSV() throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader("data.csv"));
         String line;
         ArrayList<Float> invs = new ArrayList<>();
@@ -28,7 +29,7 @@ public class CSVParser {
             }
             aids.add(new AgricultureAid(values[0], values[1], values[2], invs));
         }
-        return aids;
+        return new AgricultureAidCollection(aids);
     }
 
 }
