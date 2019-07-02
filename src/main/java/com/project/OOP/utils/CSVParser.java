@@ -20,7 +20,8 @@ public class CSVParser {
             String[] values = line.split(";");
             for(String value : values[3].split("(TOTAL)?\\s?,\\s?")){
                 try {
-                    invs.add(Float.parseFloat(value));
+                    if(!value.isEmpty())
+                        invs.add(Float.parseFloat(value));
                 } catch (Exception e) {
                     System.out.println(e);
                 }
