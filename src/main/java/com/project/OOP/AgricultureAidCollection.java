@@ -4,7 +4,7 @@ import com.project.OOP.utils.FilterUtils;
 
 import java.util.ArrayList;
 
-public class AgricultureAidCollection implements Filter<AgricultureAid, Object> {
+public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]> {
     private ArrayList<AgricultureAid> agricultureAids;
     private FilterUtils<AgricultureAid> utils;
 
@@ -31,7 +31,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object> 
     }
 
     @Override
-    public ArrayList<AgricultureAid> filterField(String fieldName, String operator, Object value) {
+    public ArrayList<AgricultureAid> filterField(String fieldName, String operator, Object... value) {
         return (ArrayList<AgricultureAid>) utils.select(this.getAgricultureAids(), fieldName, operator, value);
     }
 }
