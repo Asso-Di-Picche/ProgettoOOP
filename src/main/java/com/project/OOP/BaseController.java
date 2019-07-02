@@ -1,9 +1,9 @@
 package com.project.OOP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.OOP.utils.CSVDownloader;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.OOP.utils.CSVParser;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,7 +51,10 @@ public class BaseController {
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
     String getMetadata(){
         try {
-            return "TODO";
+            ObjectMapper mapper = new ObjectMapper();
+            JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+            JsonSchema schema = schemaGen.generateSchema(AgricultureAid.class);
+            return mapper.writeValueAsString(schema);
         } catch (Exception e){
             return e.toString();
         }
