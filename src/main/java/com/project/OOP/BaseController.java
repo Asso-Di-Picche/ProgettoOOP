@@ -34,7 +34,7 @@ public class BaseController {
             AgricultureAidCollection objects = CSVParser.getDataFromCSV();
             JSONObject json = null;
             ArrayList<AgricultureAid> result = null;
-            if(!filter.isEmpty()){
+            if(filter != null){
                 try {
                     json = new JSONObject(filter);
                     result = parseCommands(objects, json);
@@ -55,24 +55,54 @@ public class BaseController {
         }
     }
 
-    @RequestMapping(value = "/stats", method = RequestMethod.GET, produces="application/json")
-    String getStats(@RequestParam String Geo){
+    @RequestMapping(value = "/stats/{field}", method = RequestMethod.POST, produces="application/json")
+    String getStats(@PathVariable("field") int field, @RequestBody(required = false) String filter){
         try {
-            AgricultureAidCollection objects = CSVParser.getDataFromCSV();
-            AgricultureAid foundObj = objects.getAgricultureAids().stream().filter(el -> el.getGeo().equals(Geo)).findFirst().orElse(null);
-            HashMap<String, String> result = new HashMap<>();
-            if(foundObj != null){
-                result.put("geo", foundObj.getGeo());
-                result.put("avg", Float.toString(foundObj.getAvg()));
-                result.put("min", Float.toString(foundObj.getMin()));
-                result.put("max", Float.toString(foundObj.getMax()));
-                result.put("sum", Float.toString(foundObj.getSum()));
+            if(field >= 2000 & field <= 2017) {
+                AgricultureAidCollection objects = CSVParser.getDataFromCSV();
+                JSONObject json = null;
+                ArrayList<AgricultureAid> result = null;
+                if(filter != null){
+                    try {
+                        json = new JSONObject(filter);
+                        result = parseCommands(objects, json);
+                        objects.setAgricultureAids(result);
+                    } catch (ClassCastException e) {
+                        return makeErrorMessage("Sono stati inseriti dei valori in un formato errato");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return makeErrorMessage("Il JSON non sembra essere ben formato");
+                    }
+                }
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.writeValueAsString(objects.getStats(field));
             } else {
-                result.put("error", "Element not found!");
+                return makeErrorMessage("Il campo specificato non può essere utilizzato per effettuare operazioni statistiche.");
             }
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(result);
         } catch (IOException e){
+            return e.toString();
+        }
+    }
+
+    @RequestMapping(value = "/stats/{geo}/{unit}", method = RequestMethod.GET, produces="application/json")
+    String getStatsOnObject(@PathVariable("geo") String geo, @PathVariable("unit") String unit){
+        try {
+            if(geo != null && unit != null) {
+                AgricultureAidCollection objects = CSVParser.getDataFromCSV();
+                AgricultureAid foundObj = objects.getAgricultureAids().stream().filter(el -> el.getGeo().equals(geo) && el.getUnit().equals(unit)).findFirst().orElse(null);
+                HashMap<String, String> result = new HashMap<>();
+                if(foundObj != null){
+                    result.put("geo", foundObj.getGeo());
+                    result.put("unit", foundObj.getUnit());
+                    result.put("avg", Float.toString(foundObj.getAvg()));
+                    result.put("min", Float.toString(foundObj.getMin()));
+                    result.put("max", Float.toString(foundObj.getMax()));
+                    result.put("sum", Float.toString(foundObj.getSum()));
+                }
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.writeValueAsString(result);
+            } else return makeErrorMessage("Devono essere forniti sia l'unità che l'area geografica!");
+        } catch (Exception e){
             return e.toString();
         }
     }

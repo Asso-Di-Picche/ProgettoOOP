@@ -84,7 +84,7 @@ public class AgricultureAid {
             if(val.getValue() <= currentMin)
                 currentMin = val.getValue();
         }
-        return  currentMin;
+        return currentMin;
     }
 
     @JsonIgnore
