@@ -1,6 +1,7 @@
 package com.project.OOP;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import java.util.ArrayList;
@@ -48,6 +49,11 @@ public class AgricultureAid {
 
     public HashMap<Integer, Float> getAids() {
         return aids;
+    }
+
+    @JsonIgnore
+    public float getYear(int year) {
+        return aids.get(year);
     }
 
     @JsonIgnore
