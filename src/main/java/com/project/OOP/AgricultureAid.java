@@ -15,13 +15,16 @@ public class AgricultureAid {
     private String geo;
     @JsonPropertyDescription("Unità di misura considerata (MEUR_KP_PRE = Milioni di euro, PC_GDP = Percentuale in GDP)")
     private String unit;
+    @JsonPropertyDescription("Non lo so")
+    private String objectiv;
     @JsonPropertyDescription("Oggetto contenente gli aiuti ricevuti per ogni anno, dal 2000 al 2017. I campi all'interno (2000-2017) denotano gli aiuti ricevuti in un anno preciso")
     private HashMap<Integer, Float> aids;
 
-    public AgricultureAid(String freq, String geo, String unit, ArrayList<Float> invs) {
+    public AgricultureAid(String freq, String geo, String unit, String objectiv, ArrayList<Float> invs) {
         this.freq = freq;
         this.geo = geo;
         this.unit = unit;
+        this.objectiv = objectiv;
         aids = new HashMap<>();
         int dateStart = 2000;
         for (float inv: invs) {
@@ -40,6 +43,8 @@ public class AgricultureAid {
     public String getUnit() {
         return unit;
     }
+
+    public String getObjectiv() { return objectiv; }
 
     public HashMap<Integer, Float> getAids() {
         return aids;
