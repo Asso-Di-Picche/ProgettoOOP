@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.OOP.utils.ArrayListUtils;
 import com.project.OOP.utils.CSVParser;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,21 @@ public class BaseController {
         try {
             AgricultureAidCollection objects = CSVParser.getDataFromCSV();
             JSONObject json = null;
-            ArrayList<AgricultureAid> test = null;
+            ArrayList<AgricultureAid> result = null;
             if(!filter.isEmpty()){
-                json = new JSONObject(filter);
-                test = parseCommands(objects, json);
+                try {
+                    json = new JSONObject(filter);
+                    result = parseCommands(objects, json);
+                } catch (ClassCastException e) {
+                    return makeErrorMessage("Sono stati inseriti dei valori in un formato errato");
+                } catch (JSONException e) {
+                    return makeErrorMessage("Il JSON non sembra essere ben formato");
+                }
             }
 
             ObjectMapper mapper = new ObjectMapper();
-            if(test != null) {
-                return mapper.writeValueAsString(test);
+            if(result != null) {
+                return mapper.writeValueAsString(result);
             } else return mapper.writeValueAsString(objects.getAgricultureAids());
         } catch (IOException e){
             return e.toString();
@@ -80,7 +87,20 @@ public class BaseController {
         }
     }
 
+    private String makeErrorMessage(String message) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            HashMap<String, String> result = new HashMap<>();
+            result.put("error", message);
+            return mapper.writeValueAsString(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private ArrayList<AgricultureAid> parseCommands(AgricultureAidCollection obj, JSONObject parsedJson){
+        //TODO: implementare in e nin per i numeri?
         String field = parsedJson.keys().next();
         if (field.equals("$or")) {
             ArrayListUtils<AgricultureAid> utils = new ArrayListUtils<>();
@@ -97,7 +117,9 @@ public class BaseController {
             String operator = innerObj.keys().next();
             switch (operator) {
                 case "$bt":
-                    return obj.filterField(field, operator, innerObj.getJSONArray(operator).get(0), innerObj.getJSONArray(operator).get(1));
+                    float min = ((Double) innerObj.getJSONArray(operator).get(0)).floatValue();
+                    float max = ((Double) innerObj.getJSONArray(operator).get(1)).floatValue();
+                    return obj.filterField(field, operator, min, max);
                 case "$in":
                 case "$nin":
                     ArrayList<Object> values = new ArrayList<>();
@@ -106,8 +128,14 @@ public class BaseController {
                     }
                     return obj.filterField(field, operator, values.toArray());
             }
-            String val = innerObj.getString(operator);
-            return obj.filterField(field, operator, val);
+
+            try {
+                float val = innerObj.getFloat(operator);
+                return obj.filterField(field, operator, val);
+            } catch (Exception e) {
+                String val = innerObj.getString(operator);
+                return obj.filterField(field, operator, val);
+            }
         }
     }
 

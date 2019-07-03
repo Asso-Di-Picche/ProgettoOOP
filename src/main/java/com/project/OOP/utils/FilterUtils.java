@@ -27,7 +27,7 @@ public class FilterUtils<T> {
             if (operator.equals("$bt")) {
                 if(th.length == 2 && th[0] instanceof Number && th[1] instanceof Number) {
                     Double min = ((Number)th[0]).doubleValue();
-                    Double max = ((Number)th[0]).doubleValue();
+                    Double max = ((Number)th[1]).doubleValue();
                     Double valuec = ((Number)value).doubleValue();
                     return valuec > min && valuec < max;
                 }
@@ -44,9 +44,19 @@ public class FilterUtils<T> {
         Collection<T> out = new ArrayList<T>();
         for(T item:src) {
             try {
-                Method m = item.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+                Method m = null;
+                if(isInteger(fieldName)) {
+                    m = item.getClass().getMethod("getYear", int.class);
+                } else {
+                    m = item.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+                }
                 try {
-                    Object tmp = m.invoke(item);
+                    Object tmp = null;
+                    if(isInteger(fieldName)) {
+                        tmp = m.invoke(item, Integer.parseInt(fieldName));
+                    } else {
+                        tmp = m.invoke(item);
+                    }
                     if(FilterUtils.check(tmp, operator, value))
                         out.add(item);
                 } catch (IllegalAccessException e) {
@@ -63,6 +73,15 @@ public class FilterUtils<T> {
             }
         }
         return out;
+    }
+
+    private static boolean isInteger(String fieldName) {
+        try {
+            Integer.parseInt(fieldName);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
 
