@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.OOP.utils.ArrayListUtils;
 import com.project.OOP.utils.CSVParser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class BaseController {
                 } catch (ClassCastException e) {
                     return makeErrorMessage("Sono stati inseriti dei valori in un formato errato");
                 } catch (JSONException e) {
+                    e.printStackTrace();
                     return makeErrorMessage("Il JSON non sembra essere ben formato");
                 }
             }
@@ -104,14 +106,22 @@ public class BaseController {
         String field = parsedJson.keys().next();
         if (field.equals("$or")) {
             ArrayListUtils<AgricultureAid> utils = new ArrayListUtils<>();
-            ArrayList<AgricultureAid> firstSelection = parseCommands(obj, parsedJson.getJSONArray(field).getJSONObject(0));
-            ArrayList<AgricultureAid> secondSelection = parseCommands(obj, parsedJson.getJSONArray(field).getJSONObject(1));
-            return utils.union(firstSelection, secondSelection);
+            ArrayList<ArrayList<AgricultureAid>> conditions = new ArrayList<>();
+            for (Object currentCondition : parsedJson.getJSONArray(field)) {
+                if(currentCondition instanceof JSONObject) {
+                    conditions.add(parseCommands(obj, (JSONObject) currentCondition));
+                }
+            }
+            return utils.union(conditions);
         } else if (field.equals("$and")) {
             ArrayListUtils<AgricultureAid> utils = new ArrayListUtils<>();
-            ArrayList<AgricultureAid> firstSelection = parseCommands(obj, parsedJson.getJSONArray(field).getJSONObject(0));
-            ArrayList<AgricultureAid> secondSelection = parseCommands(obj, parsedJson.getJSONArray(field).getJSONObject(1));
-            return utils.intersection(firstSelection, secondSelection);
+            ArrayList<ArrayList<AgricultureAid>> conditions = new ArrayList<>();
+            for (Object currentCondition : parsedJson.getJSONArray(field)) {
+                if(currentCondition instanceof JSONObject) {
+                    conditions.add(parseCommands(obj, (JSONObject) currentCondition));
+                }
+            }
+            return utils.intersection(conditions);
         } else {
             JSONObject innerObj = parsedJson.getJSONObject(field);
             String operator = innerObj.keys().next();
