@@ -41,7 +41,7 @@ public class FilterUtils<T> {
     }
 
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) {
-        Collection<T> out = new ArrayList<T>();
+        Collection<T> out = new ArrayList<T>();  //perche il tipo è collection, ma poi chiamo ArrayList come costruttore?
         for(T item:src) {
             try {
                 Method m = null;

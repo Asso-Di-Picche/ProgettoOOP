@@ -17,6 +17,7 @@ import java.util.Iterator;
 
 @RestController
 public class BaseController {
+
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
     String getAllData(@RequestParam(defaultValue = "") String filter){
         try {
@@ -39,12 +40,17 @@ public class BaseController {
                     json = new JSONObject(filter);
                     result = parseCommands(objects, json);
                 } catch (ClassCastException e) {
+                    e.printStackTrace();
                     return makeErrorMessage("Sono stati inseriti dei valori in un formato errato");
                 } catch (JSONException e) {
                     e.printStackTrace();
                     return makeErrorMessage("Il JSON non sembra essere ben formato");
                 }
             }
+
+            /**
+             * Object mapper serve per trasformare tramite il metodo writeValueAsString un oggetto in un JSON
+             */
 
             ObjectMapper mapper = new ObjectMapper();
             if(result != null) {
@@ -98,6 +104,7 @@ public class BaseController {
                     result.put("min", Float.toString(foundObj.getMin()));
                     result.put("max", Float.toString(foundObj.getMax()));
                     result.put("sum", Float.toString(foundObj.getSum()));
+                    result.put("devstd", Float.toString(foundObj.getDevStandard()));
                 }
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.writeValueAsString(result);
@@ -113,6 +120,8 @@ public class BaseController {
             ObjectMapper mapper = new ObjectMapper();
             JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
             JsonSchema schema = schemaGen.generateSchema(AgricultureAid.class);
+            System.out.println(schemaGen);
+            System.out.println(mapper);
             return mapper.writeValueAsString(schema);
         } catch (Exception e){
             return e.toString();
@@ -132,7 +141,6 @@ public class BaseController {
     }
 
     private ArrayList<AgricultureAid> parseCommands(AgricultureAidCollection obj, JSONObject parsedJson){
-        //TODO: implementare in e nin per i numeri?
         String field = parsedJson.keys().next();
         if (field.equals("$or")) {
             ArrayListUtils<AgricultureAid> utils = new ArrayListUtils<>();
@@ -157,8 +165,8 @@ public class BaseController {
             String operator = innerObj.keys().next();
             switch (operator) {
                 case "$bt":
-                    float min = ((Double) innerObj.getJSONArray(operator).get(0)).floatValue();
-                    float max = ((Double) innerObj.getJSONArray(operator).get(1)).floatValue();
+                    double min = innerObj.getJSONArray(operator).getFloat(0);
+                    double max = innerObj.getJSONArray(operator).getFloat(1);
                     return obj.filterField(field, operator, min, max);
                 case "$in":
                 case "$nin":
@@ -167,14 +175,14 @@ public class BaseController {
                         values.add(el);
                     }
                     return obj.filterField(field, operator, values.toArray());
-            }
-
-            try {
-                float val = innerObj.getFloat(operator);
-                return obj.filterField(field, operator, val);
-            } catch (Exception e) {
-                String val = innerObj.getString(operator);
-                return obj.filterField(field, operator, val);
+                default:
+                    try {
+                        float val = innerObj.getFloat(operator);
+                        return obj.filterField(field, operator, val);
+                    } catch (Exception e) {
+                        String val = innerObj.getString(operator);
+                        return obj.filterField(field, operator, val);
+                    }
             }
         }
     }

@@ -68,6 +68,18 @@ public class AgricultureAid {
     }
 
     @JsonIgnore
+    public float getDevStandard() {
+        float avg = getAvg();
+        int count = 0;
+        float sum = 0;
+        for (Map.Entry<Integer, Float> val : aids.entrySet()) {
+            sum += (float) Math.pow(val.getValue() - avg, 2);
+            count++;
+        }
+        return (float) Math.pow(sum/count, 0.5);
+    }
+
+    @JsonIgnore
     public float getMax() {
         float currentMax = 0;
         for (Map.Entry<Integer, Float> val : aids.entrySet()) {

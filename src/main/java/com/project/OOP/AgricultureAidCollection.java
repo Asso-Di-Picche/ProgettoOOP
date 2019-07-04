@@ -39,6 +39,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         result.put("min", getMin(year));
         result.put("max", getMax(year));
         result.put("sum", getSum(year));
+        result.put("devstd", getDevStandard(year));
         return result;
     }
 
@@ -50,6 +51,17 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
             count++;
         }
         return sum/count;
+    }
+
+    public float getDevStandard(int year) {
+        float avg = getAvg(year);
+        int count = 0;
+        float sum = 0;
+        for (AgricultureAid val : agricultureAids) {
+            sum += (float) Math.pow(val.getYear(year) - avg, 2);
+            count++;
+        }
+        return (float) Math.pow(sum/count, 0.5);
     }
 
     public float getMin(int year) {
