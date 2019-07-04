@@ -56,12 +56,16 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
      */
     public Map<String, Object> getStats(int year) {
         Map<String, Object> result = new HashMap<>();
-        result.put("field", String.valueOf(year));
-        result.put("avg", getAvg(year));
-        result.put("min", getMin(year));
-        result.put("max", getMax(year));
-        result.put("sum", getSum(year));
-        result.put("devstd", getDevStandard(year));
+        if(!agricultureAids.isEmpty()) {
+            result.put("field", String.valueOf(year));
+            result.put("avg", getAvg(year));
+            result.put("min", getMin(year));
+            result.put("max", getMax(year));
+            result.put("sum", getSum(year));
+            result.put("devstd", getDevStandard(year));
+        } else {
+            result.put("error", "Non è stato trovato alcun oggetto con il filtro specificato!");
+        }
         return result;
     }
 
