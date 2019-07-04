@@ -7,32 +7,53 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *La classe raggruppa tutti gli oggetti AgricultureAid in una collezione
+ */
 public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]> {
     private ArrayList<AgricultureAid> agricultureAids;
     private FilterUtils<AgricultureAid> utils;
 
+    /**
+     * Costruttore dell'oggetto
+     * @param agricultureAids una ArrayList di AgricultureAid
+     * @param utils utils viene istanziato per accedere ai metodi di FilterUtils
+     */
     public AgricultureAidCollection(ArrayList<AgricultureAid> agricultureAids, FilterUtils<AgricultureAid> utils) {
         this.agricultureAids = agricultureAids;
         this.utils = utils;
     }
 
+    /**
+     * Costruttore dell'oggetto
+     * @param agricultureAids una ArrayList di AgricultureAid
+     */
     public AgricultureAidCollection(ArrayList<AgricultureAid> agricultureAids) {
         this.agricultureAids = agricultureAids;
         this.utils = new FilterUtils<AgricultureAid>();
     }
 
+    /**
+     * Metodo che restituisce il contenuto della collezione
+     * @return collezione di oggetti AgricultureAid
+     */
     public ArrayList<AgricultureAid> getAgricultureAids() {
         return agricultureAids;
     }
 
-    public FilterUtils<AgricultureAid> getUtils() {
-        return utils;
-    }
-
+    /**
+     * Metodo capace di inserire nuovi oggetti nella collezione
+     * @param agricultureAids oggetti AgricultureAid da inserire
+     */
     public void setAgricultureAids(ArrayList<AgricultureAid> agricultureAids) {
         this.agricultureAids = agricultureAids;
     }
 
+    /**
+     * Metodo che restituisce le statistiche su base anno sul gruppo di oggetti eventualmente filtrati
+     * @param year anno su cui si vuole ottenere le statistiche
+     * @return restituisce le statistiche
+     */
     public Map<String, Object> getStats(int year) {
         Map<String, Object> result = new HashMap<>();
         result.put("field", String.valueOf(year));
@@ -44,6 +65,11 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return result;
     }
 
+    /**
+     * Metodo che calcola la media su base anno
+     * @param year specifica l'anno su cui si vuole ottenere la media
+     * @return restituisce la media
+     */
     public float getAvg(int year) {
         int count = 0;
         float sum = 0;
@@ -54,6 +80,11 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return sum/count;
     }
 
+    /**
+     * Metodo che calcola la deviazione standard su base anno
+     * @param year specifica l'anno su cui si vuole ottenere la deviazione standard
+     * @return restituisce la deviazione standard
+     */
     public float getDevStandard(int year) {
         float avg = getAvg(year);
         int count = 0;
@@ -65,6 +96,11 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return (float) Math.pow(sum/count, 0.5);
     }
 
+    /**
+     * Metodo che trova il valore minimo su base anno
+     * @param year specifica l'anno su cui si vuole sapere il valore minimo
+     * @return restituisce il valore minimo
+     */
     public float getMin(int year) {
         float currentMin = agricultureAids.get(0).getYear(year);
         for (AgricultureAid val : agricultureAids) {
@@ -74,6 +110,11 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return currentMin;
     }
 
+    /**
+     * Metodo che trova il valore massimo su base anno
+     * @param year specifica l'anno su cui si vuole sapere il valore massimo
+     * @return restituisce il valore massimo
+     */
     public float getMax(int year) {
         float currentMax = agricultureAids.get(0).getYear(year);
         for (AgricultureAid val : agricultureAids) {
@@ -83,6 +124,11 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return currentMax;
     }
 
+    /**
+     * Metodo che trova la somma di tutti i valori su base anno
+     * @param year specifica l'anno su cui si vuole fare la somma
+     * @return restituisce la somma
+     */
     public float getSum(int year) {
         float sum = 0;
         for (AgricultureAid val : agricultureAids) {
@@ -91,6 +137,13 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         return sum;
     }
 
+    /**
+     * Metodo che permette di applicare i filtri specificati sulla collezione di oggettiAgricultureAid
+     * @param fieldName campo su cui vi vuole specificare la condizione di filtro
+     * @param operator condizione di filtro
+     * @param value valori che caratterizzano la condizione di filtro
+     * @return la collezione di oggetti filtrata
+     */
     @Override
     public ArrayList<AgricultureAid> filterField(String fieldName, String operator, Object... value) {
         return (ArrayList<AgricultureAid>) utils.select(this.getAgricultureAids(), fieldName, operator, value);
