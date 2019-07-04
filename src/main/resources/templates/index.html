@@ -15,17 +15,50 @@
     <body>
         <div id="app">
             <div class="container">
-                <h1 class="mb-2">Progetto di programmazione ad oggetti</h1>
-                <div class="card">
+                <h1 class="mb-5 mt-3">Progetto di programmazione ad oggetti</h1>
+
+                <div class="card mb-4">
                     <div @click="getAllData" class="card-header">
                         <h5 style="display:inline;">Visualizza i dati relativi al dataset</h5>
-                        <i v-if="isShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
-                        <i v-if="!isShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                        <i v-if="allDataShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!allDataShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
                     </div>
-                    <data-table v-show="isShown" ref="dataChild"></data-table>
+                    <data-table v-show="allDataShown" ref="dataChild"></data-table>
                     <div class="card-footer">
                         <a class="btn btn-primary" href="/data" role="button">Visualizza in formato JSON</a>
                     </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div @click="getMetadata" class="card-header">
+                        <h5 style="display:inline;">Visualizza i metadati relativi al dataset</h5>
+                        <i v-if="metadataShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!metadataShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                    </div>
+                    <metadata-table v-show="metadataShown" ref="metadataChild"></metadata-table>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="/metadata" role="button">Visualizza in formato JSON</a>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div @click="filterFormShown = !filterFormShown" class="card-header">
+                        <h5 style="display:inline;">Filtra il dataset</h5>
+                        <i v-if="filterFormShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!filterFormShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                    </div>
+                    <div v-show="filterFormShown" class="card-body">
+                        <filter-form @filter-submit="handleFilterSubmit" ref="filterForm"></filter-form>
+                    </div>
+                </div>
+
+                <div v-show="filterResultLoaded" class="card mb-4">
+                    <div @click="openResults" class="card-header">
+                        <h5 style="display:inline;">Risultati filtro</h5>
+                        <i v-if="filterResultShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!filterResultShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                    </div>
+                    <data-table v-show="filterResultShown" ref="filterResultChild"></data-table>
                 </div>
             </div>
         </div>
