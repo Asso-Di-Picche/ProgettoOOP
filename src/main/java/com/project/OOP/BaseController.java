@@ -48,10 +48,6 @@ public class BaseController {
                 }
             }
 
-            /**
-             * Object mapper serve per trasformare tramite il metodo writeValueAsString un oggetto in un JSON
-             */
-
             ObjectMapper mapper = new ObjectMapper();
             if(result != null) {
                 return mapper.writeValueAsString(result);
@@ -120,8 +116,6 @@ public class BaseController {
             ObjectMapper mapper = new ObjectMapper();
             JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
             JsonSchema schema = schemaGen.generateSchema(AgricultureAid.class);
-            System.out.println(schemaGen);
-            System.out.println(mapper);
             return mapper.writeValueAsString(schema);
         } catch (Exception e){
             return e.toString();
