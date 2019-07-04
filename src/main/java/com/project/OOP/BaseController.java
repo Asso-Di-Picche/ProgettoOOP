@@ -3,9 +3,10 @@ package com.project.OOP;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+import com.project.OOP.model.AgricultureAid;
+import com.project.OOP.model.AgricultureAidCollection;
 import com.project.OOP.utils.ArrayListUtils;
 import com.project.OOP.utils.CSVParser;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 @RestController
 public class BaseController {
@@ -60,7 +60,7 @@ public class BaseController {
     @RequestMapping(value = "/stats/{field}", method = RequestMethod.POST, produces="application/json")
     String getStats(@PathVariable("field") int field, @RequestBody(required = false) String filter){
         try {
-            if(field >= 2000 & field <= 2017) {
+            if(field >= 2000 && field <= 2017) {
                 AgricultureAidCollection objects = CSVParser.getDataFromCSV();
                 JSONObject json = null;
                 ArrayList<AgricultureAid> result = null;

@@ -1,12 +1,11 @@
 package com.project.OOP.utils;
 
-import com.project.OOP.AgricultureAid;
-import com.project.OOP.AgricultureAidCollection;
+import com.project.OOP.model.AgricultureAid;
+import com.project.OOP.model.AgricultureAidCollection;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class CSVParser {
 

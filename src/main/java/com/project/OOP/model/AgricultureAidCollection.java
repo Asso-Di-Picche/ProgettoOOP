@@ -1,5 +1,6 @@
-package com.project.OOP;
+package com.project.OOP.model;
 
+import com.project.OOP.Filter;
 import com.project.OOP.utils.FilterUtils;
 
 import java.util.ArrayList;
