@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *La classe raggruppa tutti gli oggetti AgricultureAid in una collezione
+ *La classe raggruppa tutti gli oggetti {@link AgricultureAid} in una collezione
  */
 public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]> {
     private ArrayList<AgricultureAid> agricultureAids;
@@ -101,13 +101,24 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
      * @param year specifica l'anno su cui si vuole sapere il valore minimo
      * @return restituisce il valore minimo
      */
-    public float getMin(int year) {
+    public Map<String, Object> getMin(int year) {
         float currentMin = agricultureAids.get(0).getYear(year);
-        for (AgricultureAid val : agricultureAids) {
-            if(val.getYear(year) <= currentMin)
-                currentMin = val.getYear(year);
+        ArrayList str = new ArrayList();
+        str.add(agricultureAids.get(0).getGeo());
+        for (int i = 1; i < agricultureAids.size(); i++) {
+            if(agricultureAids.get(i).getYear(year) == currentMin){
+                currentMin = agricultureAids.get(i).getYear(year);
+                str.add(agricultureAids.get(i).getGeo());
+            }else if(agricultureAids.get(i).getYear(year) < currentMin){
+                str.clear();
+                currentMin = agricultureAids.get(i).getYear(year);
+                str.add(agricultureAids.get(i).getGeo());
+            }
         }
-        return currentMin;
+        Map<String, Object> result = new HashMap<>();
+        result.put("geo", str);
+        result.put("value", currentMin);
+        return result;
     }
 
     /**
@@ -115,13 +126,24 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
      * @param year specifica l'anno su cui si vuole sapere il valore massimo
      * @return restituisce il valore massimo
      */
-    public float getMax(int year) {
+    public Map<String, Object> getMax(int year) {
         float currentMax = agricultureAids.get(0).getYear(year);
-        for (AgricultureAid val : agricultureAids) {
-            if(val.getYear(year) >= currentMax)
-                currentMax = val.getYear(year);
+        ArrayList str = new ArrayList();
+        str.add(agricultureAids.get(0).getGeo());
+        for (int i = 1; i < agricultureAids.size(); i++) {
+            if(agricultureAids.get(i).getYear(year) == currentMax){
+                currentMax = agricultureAids.get(i).getYear(year);
+                str.add(agricultureAids.get(i).getGeo());
+            }else if(agricultureAids.get(i).getYear(year) > currentMax){
+                str.clear();
+                currentMax = agricultureAids.get(i).getYear(year);
+                str.add(agricultureAids.get(i).getGeo());
+            }
         }
-        return currentMax;
+        Map<String, Object> result = new HashMap<>();
+        result.put("geo", str);
+        result.put("value", currentMax);
+        return result;
     }
 
     /**
