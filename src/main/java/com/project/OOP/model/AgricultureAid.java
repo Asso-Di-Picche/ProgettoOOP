@@ -3,7 +3,7 @@ package com.project.OOP.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -150,29 +150,61 @@ public class AgricultureAid {
      * Funzione che restituisce il massimo valore tra tutti i sussidi relativi al dato
      * @return Massimo tra tutti i sussidi dell'oggetto
      */
-    @JsonIgnore
-    public float getMax() {
-        float currentMax = 0;
-        for (Map.Entry<Integer, Float> val : aids.entrySet()) {
-            if(val.getValue() >= currentMax)
-                currentMax = val.getValue();
+    public Map<String, Object> getMax() {
+        ArrayList<String> currentYears = new ArrayList<>();
+        Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
+        HashMap.Entry<Integer, Float> currentElement = it.next();
+        float currentMax = currentElement.getValue();
+        currentYears.add(Integer.toString(currentElement.getKey()));
+        while (it.hasNext()) {
+            currentElement = it.next();
+            if(currentElement.getValue() == currentMax){
+                currentYears.add(Integer.toString(currentElement.getKey()));
+            } else if(currentElement.getValue() > currentMax) {
+                currentYears.clear();
+                currentYears.add(Integer.toString(currentElement.getKey()));
+                currentMax = currentElement.getValue();
+            }
         }
-        return  currentMax;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("year", currentYears);
+        result.put("value", currentMax);
+        return result;
     }
+
+    /**
+     *Funzione che restituisce il minimo valore tra tutti i sussidi relativi al dato
+     * @return Minimo tra tutti i sussidi dell'oggetto
+     */
+    public Map<String, Object> getMin() {
+        ArrayList<String> currentYears = new ArrayList<>();
+        Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
+        HashMap.Entry<Integer, Float> currentElement = it.next();
+        float currentMin = currentElement.getValue();
+        currentYears.add(Integer.toString(currentElement.getKey()));
+        while (it.hasNext()) {
+            currentElement = it.next();
+            if(currentElement.getValue() == currentMin){
+                currentYears.add(Integer.toString(currentElement.getKey()));
+            } else if(currentElement.getValue() < currentMin) {
+                currentYears.clear();
+                currentYears.add(Integer.toString(currentElement.getKey()));
+                currentMin = currentElement.getValue();
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("year", currentYears);
+        result.put("value", currentMin);
+        return result;
+    }
+
 
     /**
      * Funzione che restituisce il minimo valore tra tutti i sussidi relativi al dato
      * @return Minimo tra tutti i sussidi dell'oggetto
      */
-    @JsonIgnore
-    public float getMin() {
-        float currentMin = 10000;
-        for (Map.Entry<Integer, Float> val : aids.entrySet()) {
-            if(val.getValue() <= currentMin)
-                currentMin = val.getValue();
-        }
-        return currentMin;
-    }
 
     /**
      * Funzione che restituisce la somma tra tutti i sussidi relativi al dato

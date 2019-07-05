@@ -111,7 +111,6 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         str.add(agricultureAids.get(0).getGeo());
         for (int i = 1; i < agricultureAids.size(); i++) {
             if(agricultureAids.get(i).getYear(year) == currentMin){
-                currentMin = agricultureAids.get(i).getYear(year);
                 str.add(agricultureAids.get(i).getGeo());
             }else if(agricultureAids.get(i).getYear(year) < currentMin){
                 str.clear();
@@ -136,7 +135,6 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
         str.add(agricultureAids.get(0).getGeo());
         for (int i = 1; i < agricultureAids.size(); i++) {
             if(agricultureAids.get(i).getYear(year) == currentMax){
-                currentMax = agricultureAids.get(i).getYear(year);
                 str.add(agricultureAids.get(i).getGeo());
             }else if(agricultureAids.get(i).getYear(year) > currentMax){
                 str.clear();
