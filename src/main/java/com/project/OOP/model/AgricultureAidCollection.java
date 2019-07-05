@@ -5,6 +5,7 @@ import com.project.OOP.utils.FilterUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -107,7 +108,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
      */
     public Map<String, Object> getMin(int year) {
         float currentMin = agricultureAids.get(0).getYear(year);
-        ArrayList str = new ArrayList();
+        HashSet<String> str = new HashSet<>();
         str.add(agricultureAids.get(0).getGeo());
         for (int i = 1; i < agricultureAids.size(); i++) {
             if(agricultureAids.get(i).getYear(year) == currentMin){
@@ -131,7 +132,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
      */
     public Map<String, Object> getMax(int year) {
         float currentMax = agricultureAids.get(0).getYear(year);
-        ArrayList str = new ArrayList();
+        HashSet<String> str = new HashSet<>();
         str.add(agricultureAids.get(0).getGeo());
         for (int i = 1; i < agricultureAids.size(); i++) {
             if(agricultureAids.get(i).getYear(year) == currentMax){
