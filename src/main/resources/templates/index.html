@@ -52,6 +52,17 @@
                     </div>
                 </div>
 
+                <div class="card mb-4">
+                    <div @click="statsFormShown = !statsFormShown" class="card-header">
+                        <h5 style="display:inline;">Ottieni statistiche sul dataset</h5>
+                        <i v-if="statsFormShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!statsFormShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                    </div>
+                    <div v-show="statsFormShown" class="card-body">
+                        WEEEEEEEEEE
+                    </div>
+                </div>
+
                 <div v-show="filterResultLoaded" class="card mb-4">
                     <div @click="openResults" class="card-header">
                         <h5 style="display:inline;">Risultati filtro</h5>
@@ -62,6 +73,6 @@
                 </div>
             </div>
         </div>
-        <script src="main.js"></script>
+        <script type="module" src="main.js"></script>
     </body>
 </html>

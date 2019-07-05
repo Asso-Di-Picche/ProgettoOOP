@@ -22,7 +22,7 @@ public class FilterUtils<T> {
                 return valuec < thC;
         } else if(th.length == 1 && th[0] instanceof String && value instanceof String) {
             if(operator.equals("$eq") || operator.equals("$in")) return value.equals(th[0]);
-            else return !value.equals(th[0]);
+            else if(operator.equals("$not") || operator.equals("$nin")) return !value.equals(th[0]);
         } else if(th.length > 1) {
             if (operator.equals("$bt")) {
                 if(th.length == 2 && th[0] instanceof Number && th[1] instanceof Number) {
