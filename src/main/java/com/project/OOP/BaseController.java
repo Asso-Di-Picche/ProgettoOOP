@@ -97,15 +97,15 @@ public class BaseController {
             if(geo != null && unit != null) {
                 AgricultureAidCollection objects = CSVParser.getDataFromCSV();
                 AgricultureAid foundObj = objects.getAgricultureAids().stream().filter(el -> el.getGeo().equals(geo) && el.getUnit().equals(unit)).findFirst().orElse(null);
-                HashMap<String, String> result = new HashMap<>();
+                HashMap<String, Object> result = new HashMap<>();
                 if(foundObj != null){
                     result.put("geo", foundObj.getGeo());
                     result.put("unit", foundObj.getUnit());
-                    result.put("avg", Float.toString(foundObj.getAvg()));
-                    result.put("min", Float.toString(foundObj.getMin()));
-                    result.put("max", Float.toString(foundObj.getMax()));
-                    result.put("sum", Float.toString(foundObj.getSum()));
-                    result.put("devstd", Float.toString(foundObj.getDevStandard()));
+                    result.put("avg", foundObj.getAvg());
+                    result.put("min", foundObj.getMin());
+                    result.put("max", foundObj.getMax());
+                    result.put("sum", foundObj.getSum());
+                    result.put("devstd", foundObj.getDevStandard());
                 }
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.writeValueAsString(result);
