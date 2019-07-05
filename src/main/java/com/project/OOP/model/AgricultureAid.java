@@ -150,6 +150,7 @@ public class AgricultureAid {
      * Funzione che restituisce il massimo valore tra tutti i sussidi relativi al dato
      * @return Massimo tra tutti i sussidi dell'oggetto
      */
+    @JsonIgnore
     public Map<String, Object> getMax() {
         ArrayList<String> currentYears = new ArrayList<>();
         Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
@@ -177,6 +178,7 @@ public class AgricultureAid {
      *Funzione che restituisce il minimo valore tra tutti i sussidi relativi al dato
      * @return Minimo tra tutti i sussidi dell'oggetto
      */
+    @JsonIgnore
     public Map<String, Object> getMin() {
         ArrayList<String> currentYears = new ArrayList<>();
         Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
