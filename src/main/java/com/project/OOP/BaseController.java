@@ -3,6 +3,7 @@ package com.project.OOP;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+import com.project.OOP.errors.CommandNotFoundException;
 import com.project.OOP.model.AgricultureAid;
 import com.project.OOP.model.AgricultureAidCollection;
 import com.project.OOP.utils.ArrayListUtils;
@@ -45,6 +46,8 @@ public class BaseController {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     return makeErrorMessage("Il JSON non sembra essere ben formato");
+                } catch (CommandNotFoundException e) {
+                    return makeErrorMessage(e.getMessage());
                 }
             }
 
@@ -57,7 +60,7 @@ public class BaseController {
         }
     }
 
-    @RequestMapping(value = "/stats/{field}", method = RequestMethod.POST, produces="application/json")
+    @RequestMapping(value = "/stats/year/{field}", method = RequestMethod.POST, produces="application/json")
     String getStats(@PathVariable("field") int field, @RequestBody(required = false) String filter){
         try {
             if(field >= 2000 && field <= 2017) {
@@ -74,6 +77,8 @@ public class BaseController {
                     } catch (JSONException e) {
                         e.printStackTrace();
                         return makeErrorMessage("Il JSON non sembra essere ben formato");
+                    } catch (CommandNotFoundException e) {
+                        return makeErrorMessage(e.getMessage());
                     }
                 }
                 ObjectMapper mapper = new ObjectMapper();
@@ -86,7 +91,7 @@ public class BaseController {
         }
     }
 
-    @RequestMapping(value = "/stats/{geo}/{unit}", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/stats/geo/{geo}/unit/{unit}", method = RequestMethod.GET, produces="application/json")
     String getStatsOnObject(@PathVariable("geo") String geo, @PathVariable("unit") String unit){
         try {
             if(geo != null && unit != null) {
@@ -134,7 +139,7 @@ public class BaseController {
         return null;
     }
 
-    private ArrayList<AgricultureAid> parseCommands(AgricultureAidCollection obj, JSONObject parsedJson){
+    private ArrayList<AgricultureAid> parseCommands(AgricultureAidCollection obj, JSONObject parsedJson) throws CommandNotFoundException{
         String field = parsedJson.keys().next();
         if (field.equals("$or")) {
             ArrayListUtils<AgricultureAid> utils = new ArrayListUtils<>();
@@ -169,7 +174,10 @@ public class BaseController {
                         values.add(el);
                     }
                     return obj.filterField(field, operator, values.toArray());
-                default:
+                case "$eq":
+                case "$not":
+                case "$lt":
+                case "$gt":
                     try {
                         float val = innerObj.getFloat(operator);
                         return obj.filterField(field, operator, val);
@@ -177,6 +185,8 @@ public class BaseController {
                         String val = innerObj.getString(operator);
                         return obj.filterField(field, operator, val);
                     }
+                default:
+                    throw new CommandNotFoundException("Uno o più dei comandi inseriti non è valido");
             }
         }
     }
