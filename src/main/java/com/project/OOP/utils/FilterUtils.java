@@ -7,7 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Classe che permette di filtrare gli oggetti secondo i paramentri specificati
+ * @param <T> Tipo generico
+ */
 public class FilterUtils<T> {
+    /**
+     * Metodo che determina per ciscun'oggetto della collezione, in base al filtro specificato, se deve essere incluso nella risposta
+     * @param value oggetto che viene considerato nel test
+     * @param operator condizione del filtro
+     * @param th oggetti che caratterizzano il filtro
+     * @return un booleano che determina se l'oggette deve essere tenuto o meno
+     */
     public static boolean check(Object value, String operator, Object... th) {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
             Double thC = ((Number)th[0]).doubleValue();
@@ -40,6 +51,14 @@ public class FilterUtils<T> {
         return false;
     }
 
+    /**
+     * Metodo che riceve l'intera collezione di oggetti ed il filtro e restituisce una collezione parziale con gli oggetti selezionati
+     * @param src l'intra collezione di oggetti
+     * @param fieldName campo su cui opera il filtro
+     * @param operator condizione del filtro
+     * @param value oggetti che caratterizzano il filtro
+     * @return collezione risultante
+     */
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) {
         Collection<T> out = new ArrayList<T>();
         for(T item:src) {
@@ -75,6 +94,11 @@ public class FilterUtils<T> {
         return out;
     }
 
+    /**
+     * Metodo che stabilisce se l'argomento in ingresso può essere parsato come intero
+     * @param fieldName stringa sui testare il parse
+     * @return restituisce un booleano per esprimere l'esito del test
+     */
     private static boolean isInteger(String fieldName) {
         try {
             Integer.parseInt(fieldName);
