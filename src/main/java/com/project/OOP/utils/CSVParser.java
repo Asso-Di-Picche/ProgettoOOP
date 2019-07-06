@@ -7,8 +7,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Classe che fornisce il metodo per parsare il file CSV già scaricato
+ */
 public class CSVParser {
 
+    /**
+     * Metodo che parsa il file CSV già scaricato e salvato con nome data inserendo tutte le infomazioni recuperate
+     * sotto forma di oggetti all'interno di {@link AgricultureAidCollection}
+     * @return restituisce la collezione di oggetti
+     * @throws IOException XXXXXXXXXXXXX
+     */
     public static AgricultureAidCollection getDataFromCSV() throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader("data.csv"));
         String line;

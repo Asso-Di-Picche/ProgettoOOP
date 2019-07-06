@@ -16,9 +16,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller unico della nastra applicazione che gestisce tutte le rotte del sito
+ */
 @RestController
 public class BaseController {
 
+    /**
+     * Rotta che mostra tutti i dati recuperati dal CSV sotto forma di JSON
+     * @param filter XXXXXXXXXXXXXXXXXXX
+     * @return restituisce il JSON
+     */
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
     String getAllData(@RequestParam(defaultValue = "") String filter){
         try {
@@ -30,6 +38,11 @@ public class BaseController {
         }
     }
 
+    /**
+     * Rotta che mostra i dati recuperati dal CSV, eventulmente filtrati, sotto forma di JSON
+     * @param filter filtro riportato nel messaggio della richiesta in formato POST
+     * @return restituisce il JSON
+     */
     @RequestMapping(value = "/data", method = RequestMethod.POST, produces="application/json")
     String getAllDataFiltered(@RequestBody(required = false) String filter){
         try {
@@ -60,6 +73,12 @@ public class BaseController {
         }
     }
 
+    /**
+     * Rotta che mostra le statistiche su base anno, permettendo di calcolarle su un dataset eventualmente filtrato
+     * @param field anno su cui si volgiono calcolare le statistiche
+     * @param filter filtri eventuali che si volgiono applicare sul dataset prima di calcolare le statistiche
+     * @return restituisce le statistiche
+     */
     @RequestMapping(value = "/stats/year/{field}", method = RequestMethod.POST, produces="application/json")
     String getStats(@PathVariable("field") int field, @RequestBody(required = false) String filter){
         try {
@@ -91,6 +110,12 @@ public class BaseController {
         }
     }
 
+    /**
+     * Rotta che permette di calcolare le statistiche su una determinata area geografica, specificando obbligatoriamente anche l'unità di misura desiderata
+     * @param geo area geografica su cui si volgiono calcolare le statistiche
+     * @param unit unità di misura su cui si volgiono calcolare le statistiche
+     * @return restituisce le statistiche
+     */
     @RequestMapping(value = "/stats/geo/{geo}/unit/{unit}", method = RequestMethod.GET, produces="application/json")
     String getStatsOnObject(@PathVariable("geo") String geo, @PathVariable("unit") String unit){
         try {
@@ -115,6 +140,10 @@ public class BaseController {
         }
     }
 
+    /**
+     * Rotta che mostra i metadati di ogni oggetto del dataset
+     * @return restituisce i metadati sotto forma di JSON
+     */
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
     String getMetadata(){
         try {
@@ -127,6 +156,11 @@ public class BaseController {
         }
     }
 
+    /**
+     * Metodo che consente di mostrare un messaggio di errore personalizzato sotto forma di JSON
+     * @param message testo da mostrare nel messaggio di errore
+     * @return restituisce il JSON
+     */
     private String makeErrorMessage(String message) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -139,6 +173,13 @@ public class BaseController {
         return null;
     }
 
+    /**
+     * Metodo che consente di filtrare i contenuti del dataset in base ai filtri specificati
+     * @param obj dataset su cui applicare i filtri
+     * @param parsedJson filtri forniti all'interno di un JSON object
+     * @return restituisce la collezione di oggetti filtrati
+     * @throws CommandNotFoundException XXXXXXXXXXXXXXXX
+     */
     private ArrayList<AgricultureAid> parseCommands(AgricultureAidCollection obj, JSONObject parsedJson) throws CommandNotFoundException{
         String field = parsedJson.keys().next();
         if (field.equals("$or")) {
