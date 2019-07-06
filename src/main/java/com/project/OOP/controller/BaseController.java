@@ -1,4 +1,4 @@
-package com.project.OOP;
+package com.project.OOP.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;

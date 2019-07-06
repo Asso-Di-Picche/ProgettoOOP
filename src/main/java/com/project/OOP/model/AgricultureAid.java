@@ -3,10 +3,8 @@ package com.project.OOP.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * La classe AgricultureAid modella un singolo elemento del dataset, rappresentante i sussidi agriculturali ricevuti
@@ -150,8 +148,9 @@ public class AgricultureAid {
      * Funzione che restituisce il massimo valore tra tutti i sussidi relativi al dato
      * @return Massimo tra tutti i sussidi dell'oggetto
      */
+    @JsonIgnore
     public Map<String, Object> getMax() {
-        ArrayList<String> currentYears = new ArrayList<>();
+        HashSet<String> currentYears = new HashSet<>();
         Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
         HashMap.Entry<Integer, Float> currentElement = it.next();
         float currentMax = currentElement.getValue();
@@ -177,8 +176,9 @@ public class AgricultureAid {
      *Funzione che restituisce il minimo valore tra tutti i sussidi relativi al dato
      * @return Minimo tra tutti i sussidi dell'oggetto
      */
+    @JsonIgnore
     public Map<String, Object> getMin() {
-        ArrayList<String> currentYears = new ArrayList<>();
+        HashSet<String> currentYears = new HashSet<>();
         Iterator<Map.Entry<Integer, Float>> it = aids.entrySet().iterator();
         HashMap.Entry<Integer, Float> currentElement = it.next();
         float currentMin = currentElement.getValue();
@@ -199,12 +199,6 @@ public class AgricultureAid {
         result.put("value", currentMin);
         return result;
     }
-
-
-    /**
-     * Funzione che restituisce il minimo valore tra tutti i sussidi relativi al dato
-     * @return Minimo tra tutti i sussidi dell'oggetto
-     */
 
     /**
      * Funzione che restituisce la somma tra tutti i sussidi relativi al dato
