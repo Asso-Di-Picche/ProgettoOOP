@@ -1,43 +1,44 @@
-import filterItem from './FilterItem.js'
+import filterItem from './FilterItem.js';
 
 let FilterForm = Vue.component('filter-form', {
 	template: `
-    <form>
+    <div>
         <p>Seleziona la logica su cui vuoi operare:</p>
         <div class="custom-control custom-radio custom-control-inline">
-            <input class="custom-control-input" v-model="choice" value="0" type="radio" name="inlineRadioOptions" id="inlineRadio1">
-            <label class="custom-control-label" for="inlineRadio1">AND</label>
+            <input class="custom-control-input" v-model="choice" value="0" type="radio" :id="'inlineRadio1' + id">
+            <label class="custom-control-label" :for="'inlineRadio1' + id">AND</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline">
-            <input class="custom-control-input" v-model="choice" value="1" type="radio" name="inlineRadioOptions" id="inlineRadio2">
-            <label class="custom-control-label" for="inlineRadio2">OR</label>
+            <input class="custom-control-input" v-model="choice" value="1" type="radio" :id="'inlineRadio2' + id">
+            <label class="custom-control-label" :for="'inlineRadio2' + id">OR</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline">
-            <input class="custom-control-input" v-model="choice" value="2" type="radio" name="inlineRadioOptions" id="inlineRadio3">
-            <label class="custom-control-label" for="inlineRadio3">Nessuna delle due</label>
+            <input class="custom-control-input" v-model="choice" value="2" type="radio" :id="'inlineRadio3' + id">
+            <label class="custom-control-label" :for="'inlineRadio3' + id">Nessuna delle due</label>
         </div>
         <template v-for="(child, index) in children">
             <component @delete-filter="deleteFilter(index)" :is="child" :key="index"></component>
         </template>
-        <div class="row">
-            <div class="col-4">
+        <div class="row mb-3">
+            <div class="col-6">
                 <button @click="addFilter" :disabled="choice == 2" class="btn btn-primary btn-block" type="button">Aggiungi un nuovo filtro</button>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <button :disabled="lastIndex == 0" @click="deleteFilter(lastIndex)" class="btn btn-danger btn-block" type="button">Elimina l'ultimo filtro</button>
             </div>
-            <div class="col-4">
-                <button @click="submitFilter" class="btn btn-success btn-block" type="button">Submit</button>
-            </div>  
         </div>
-    </form>
+    </div>
     `,
 	data() {
 		return {
 			children: [ filterItem ],
 			choice: '2',
-			objToSubmit: {}
+			objToSubmit: {},
+			id: null
 		};
+	},
+	mounted() {
+		this.id = this._uid;
 	},
 	methods: {
 		addFilter() {
@@ -56,7 +57,7 @@ let FilterForm = Vue.component('filter-form', {
 			}
 			return obj;
 		},
-		submitFilter() {
+		getFilterData() {
 			switch (this.choice) {
 				case '0':
 					this.objToSubmit = new Object();
@@ -77,15 +78,7 @@ let FilterForm = Vue.component('filter-form', {
 					this.objToSubmit = this.addFilterObj(this.$children[0]);
 					break;
 			}
-			fetch('/data', {
-				method: 'post',
-				body: JSON.stringify(this.objToSubmit)
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					this.$root.jsonData = data;
-					this.$emit('filter-submit');
-				});
+			return this.objToSubmit;
 		}
 	},
 	computed: {

@@ -50,8 +50,8 @@ let DataTable = Vue.component('data-table', {
 				});
 			}
 		},
-		refreshFilterResults() {
-			this.allData = this.$root.jsonData;
+		refreshFilterResults(data) {
+			this.allData = data;
 		}
 	}
 });

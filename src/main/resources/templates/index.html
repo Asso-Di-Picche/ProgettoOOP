@@ -10,6 +10,12 @@
             .card-body {
                 overflow: auto;
             }
+            .card-header {
+                cursor: pointer;
+            }
+            #stats .row .col {
+                padding: 6px;
+            }
         </style>
     </head>
     <body>
@@ -48,7 +54,7 @@
                         <i v-if="!filterFormShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
                     </div>
                     <div v-show="filterFormShown" class="card-body">
-                        <filter-form @filter-submit="handleFilterSubmit" ref="filterForm"></filter-form>
+                        <filter-section @filter-submit="handleFilterSubmit" ref="filterForm"></filter-section>
                     </div>
                 </div>
 
@@ -59,7 +65,7 @@
                         <i v-if="!statsFormShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
                     </div>
                     <div v-show="statsFormShown" class="card-body">
-                        WEEEEEEEEEE
+                        <stats-section @stats-submit="handleStatsSubmit"></stats-section>
                     </div>
                 </div>
 
@@ -70,6 +76,15 @@
                         <i v-if="!filterResultShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
                     </div>
                     <data-table v-show="filterResultShown" ref="filterResultChild"></data-table>
+                </div>
+
+                <div v-show="statsResultLoaded" class="card mb-4">
+                    <div @click="openStats" class="card-header">
+                        <h5 style="display:inline;">Risultati statistiche</h5>
+                        <i v-if="statsResultShown" style="font-size:150%;" class="fas fa-angle-up float-right"></i>
+                        <i v-if="!statsResultShown" style="font-size:150%;" class="fas fa-angle-down float-right"></i>
+                    </div>
+                    <stats-table v-show="statsResultShown" ref="statsResultChild"></data-stats>
                 </div>
             </div>
         </div>
