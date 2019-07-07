@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Controller unico della nastra applicazione che gestisce tutte le rotte del sito
  */
 @RestController
-public class BaseController {
+public class APIController {
 
     /**
      * Rotta che mostra tutti i dati recuperati dal CSV sotto forma di JSON
