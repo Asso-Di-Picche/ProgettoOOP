@@ -24,11 +24,10 @@ public class APIController {
 
     /**
      * Rotta che mostra tutti i dati recuperati dal CSV sotto forma di JSON
-     * @param filter XXXXXXXXXXXXXXXXXXX
      * @return restituisce il JSON
      */
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
-    String getAllData(@RequestParam(defaultValue = "") String filter){
+    String getAllData(){
         try {
             AgricultureAidCollection objects = CSVParser.getDataFromCSV();
             ObjectMapper mapper = new ObjectMapper();
