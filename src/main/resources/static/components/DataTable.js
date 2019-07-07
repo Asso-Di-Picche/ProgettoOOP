@@ -45,7 +45,7 @@ let DataTable = Vue.component('data-table', {
 	methods: {
 		getAllData() {
 			if (!this.allData) {
-				fetch('/data').then((res) => res.json()).then((data) => {
+				fetch('/data', { method: 'post' }).then((res) => res.json()).then((data) => {
 					this.allData = data;
 				});
 			}
