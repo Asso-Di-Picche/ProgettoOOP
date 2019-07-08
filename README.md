@@ -90,6 +90,10 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 
 Rotta in cui è possibile accedere ad un'interfaccia grafica che permette di eseguire le operazioni di ricerca e di effettuamento delle statistiche senza la necessità di utilizzare linguaggi di programmazione e/o tool esterni quali Postman per effettuare le richieste.
 
+> **POST** /metadata
+
+Rotta in cui è possibile accedere ai metadati relativi all'oggetto restituito dal servizio.
+
 > **POST** /data
 
 Effettuando una richiesta POST su questa rotta è possibile ottenere i dati appartenente al dataset. In particolare si distinguono due casi:
@@ -201,3 +205,15 @@ Al fine di semplificare l'operazione di filtro e l'esecuzione delle statistiche,
 ![](frontend.png)
 
 # UML
+
+## Class Diagram
+
+![](classdiagram.png)
+
+## Use Case Diagram
+
+## Sequence Diagram
+
+Funzione che va a richiedere i dati eseguendo un filtro su questi:
+
+![](filtroseq.png)

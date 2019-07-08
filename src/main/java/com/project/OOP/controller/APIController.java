@@ -23,21 +23,6 @@ import java.util.HashMap;
 public class APIController {
 
     /**
-     * Rotta che mostra tutti i dati recuperati dal CSV sotto forma di JSON
-     * @return Restituisce un JSON contenente tutti gli oggetti del dataset
-     */
-    @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
-    String getAllData(){
-        try {
-            AgricultureAidCollection objects = CSVParser.getDataFromCSV();
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(objects.getAgricultureAids());
-        } catch (IOException e){
-            return e.toString();
-        }
-    }
-
-    /**
      * Rotta che mostra i dati recuperati dal CSV, eventulmente filtrati, sotto forma di JSON
      * @param filter Filtro riportato nel messaggio della richiesta in formato POST
      * @return Restituisce un JSON contenente i dati, eventualmente filtrati
@@ -68,7 +53,7 @@ public class APIController {
                 return mapper.writeValueAsString(result);
             } else return mapper.writeValueAsString(objects.getAgricultureAids());
         } catch (IOException e){
-            return e.toString();
+            return makeErrorMessage("Si è verificato un errore imprevisto");
         }
     }
 
@@ -105,7 +90,7 @@ public class APIController {
                 return makeErrorMessage("Il campo specificato non può essere utilizzato per effettuare operazioni statistiche.");
             }
         } catch (IOException e){
-            return e.toString();
+        	return makeErrorMessage("Si è verificato un errore imprevisto");
         }
     }
 
@@ -131,12 +116,14 @@ public class APIController {
                     result.put("max", foundObj.getMax());
                     result.put("sum", foundObj.getSum());
                     result.put("devstd", foundObj.getDevStandard());
+                } else {
+                    return makeErrorMessage("Non sono stati trovati elementi corrispondenti alla ricerca");
                 }
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.writeValueAsString(result);
             } else return makeErrorMessage("Devono essere forniti sia l'unità che l'area geografica!");
         } catch (Exception e){
-            return e.toString();
+        	return makeErrorMessage("Si è verificato un errore imprevisto");
         }
     }
 
@@ -152,7 +139,7 @@ public class APIController {
             JsonSchema schema = schemaGen.generateSchema(AgricultureAid.class);
             return mapper.writeValueAsString(schema);
         } catch (Exception e){
-            return e.toString();
+        	return makeErrorMessage("Si è verificato un errore imprevisto");
         }
     }
 
