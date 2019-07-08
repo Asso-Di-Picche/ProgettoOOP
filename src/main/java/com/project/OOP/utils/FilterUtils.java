@@ -8,16 +8,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Classe che permette di filtrare gli oggetti secondo i paramentri specificati
+ * Classe che permette di filtrare gli oggetti secondo i parametri specificati
  * @param <T> Tipo generico
  */
 public class FilterUtils<T> {
     /**
-     * Metodo che determina per ciscun'oggetto della collezione, in base al filtro specificato, se deve essere incluso nella risposta
-     * @param value oggetto che viene considerato nel test
-     * @param operator condizione del filtro
-     * @param th oggetti che caratterizzano il filtro
-     * @return un booleano che determina se l'oggette deve essere tenuto o meno
+     * Metodo che determina per ciscun'oggetto della collezione, in base al filtro specificato,
+     * se deve essere incluso nella risposta
+     * @param value Oggetto che viene considerato nel test
+     * @param operator Condizione del filtro
+     * @param th Oggetti che caratterizzano il filtro
+     * @return Un booleano che determina se l'oggetto deve essere tenuto o meno
      */
     public static boolean check(Object value, String operator, Object... th) {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
@@ -40,7 +41,7 @@ public class FilterUtils<T> {
                     Double min = ((Number)th[0]).doubleValue();
                     Double max = ((Number)th[1]).doubleValue();
                     Double valuec = ((Number)value).doubleValue();
-                    return valuec > min && valuec < max;
+                    return valuec >= min && valuec <= max;
                 }
             }
             else if (operator.equals("$in"))
@@ -52,12 +53,13 @@ public class FilterUtils<T> {
     }
 
     /**
-     * Metodo che riceve l'intera collezione di oggetti ed il filtro e restituisce una collezione parziale con gli oggetti selezionati
-     * @param src l'intra collezione di oggetti
-     * @param fieldName campo su cui opera il filtro
-     * @param operator condizione del filtro
-     * @param value oggetti che caratterizzano il filtro
-     * @return collezione risultante
+     * Metodo che riceve l'intera collezione di oggetti ed il filtro e restituisce una collezione parziale con gli
+     * oggetti selezionati
+     * @param src L'intera collezione di oggetti
+     * @param fieldName Campo su cui opera il filtro
+     * @param operator Condizione del filtro
+     * @param value Oggetti che caratterizzano il filtro
+     * @return Collezione risultante
      */
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) {
         Collection<T> out = new ArrayList<T>();
@@ -96,8 +98,8 @@ public class FilterUtils<T> {
 
     /**
      * Metodo che stabilisce se l'argomento in ingresso può essere parsato come intero
-     * @param fieldName stringa sui testare il parse
-     * @return restituisce un booleano per esprimere l'esito del test
+     * @param fieldName Stringa sui testare il parse
+     * @return Restituisce un booleano per esprimere l'esito del test
      */
     private static boolean isInteger(String fieldName) {
         try {

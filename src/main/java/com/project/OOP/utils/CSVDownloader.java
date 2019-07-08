@@ -15,8 +15,8 @@ public class CSVDownloader {
     /**
      * Metodo che riceve un URL che si riferisce ad un JSON che viene scaricato ed inserito all'interno di un JSON object
      * @param url URL che identifica il JSON
-     * @return restituisce il JSON object
-     * @throws IOException XXXXXXXXXXXXXXXXXXXXXXXX
+     * @return Restituisce il JSON object
+     * @throws IOException Errore che viene lanciato nel caso in cui ci siano problemi nell'Input/Output
      */
     public static JSONObject getJSONFromURL(String url) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -32,8 +32,8 @@ public class CSVDownloader {
     }
 
     /**
-     *Metodo che parsa il JSON che gli viene dato come argomento cerca di scaricare tutti i link affiancati dalla chiave format che contengono CSV
-     * @param json JSON che viene parsato
+     * Metodo che parsa il JSON che gli viene dato come argomento cerca di scaricare tutti i link affiancati dalla chiave format che contengono CSV
+     * @param json Oggetto JSON che verrà parsato al fine di ottenere il link per il CSV e scaricarlo
      */
     public static void downloadCSVfromJSON(JSONObject json){
         JSONObject result = json.getJSONObject("result");
@@ -55,8 +55,8 @@ public class CSVDownloader {
 
     /**
      * Metodo che scarica il file di formato CSV all'interno di un file chiamato data tramite un URL che gli viene dato in ingresso
-     * @param url URL che si riferisce la file CSV
-     * @throws IOException XXXXXXXXXXXXXXXXXXXXXX
+     * @param url URL che si riferisce al file CSV
+     * @throws IOException Errore che viene lanciato nel caso in cui ci siano problemi nell'Input/Output
      */
     private static void downloadCSVFromURL(String url) throws IOException{
         if(!Files.exists(Paths.get("data.csv"))){

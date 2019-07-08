@@ -1,6 +1,6 @@
 package com.project.OOP.model;
 
-import com.project.OOP.Filter;
+import com.project.OOP.utils.Filter;
 import com.project.OOP.utils.FilterUtils;
 
 import java.util.ArrayList;
@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- *La classe raggruppa tutti gli oggetti {@link AgricultureAid} in una collezione
+ * Classe che raggruppa tutti gli oggetti {@link AgricultureAid} in una collezione, offrendo delle funzionalità aggiuntive
+ * (quali le statistiche sulla collezione o il filtraggio)
  */
 public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]> {
     private ArrayList<AgricultureAid> agricultureAids;
@@ -17,7 +18,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Costruttore dell'oggetto
-     * @param agricultureAids una ArrayList di AgricultureAid
+     * @param agricultureAids una ArrayList di {@link AgricultureAid}
      * @param utils utils viene istanziato per accedere ai metodi di FilterUtils
      */
     public AgricultureAidCollection(ArrayList<AgricultureAid> agricultureAids, FilterUtils<AgricultureAid> utils) {
@@ -27,7 +28,7 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Costruttore dell'oggetto
-     * @param agricultureAids una ArrayList di AgricultureAid
+     * @param agricultureAids Una ArrayList di {@link AgricultureAid}
      */
     public AgricultureAidCollection(ArrayList<AgricultureAid> agricultureAids) {
         this.agricultureAids = agricultureAids;
@@ -36,15 +37,15 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che restituisce il contenuto della collezione
-     * @return collezione di oggetti AgricultureAid
+     * @return Collezione di oggetti {@link AgricultureAid}
      */
     public ArrayList<AgricultureAid> getAgricultureAids() {
         return agricultureAids;
     }
 
     /**
-     * Metodo capace di inserire nuovi oggetti nella collezione
-     * @param agricultureAids oggetti AgricultureAid da inserire
+     * Metodo capace di settare una nuova collezione di {@link AgricultureAid} per la classe
+     * @param agricultureAids Oggetti {@link AgricultureAid} da inserire
      */
     public void setAgricultureAids(ArrayList<AgricultureAid> agricultureAids) {
         this.agricultureAids = agricultureAids;
@@ -52,8 +53,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che restituisce le statistiche su base anno sul gruppo di oggetti eventualmente filtrati
-     * @param year anno su cui si vuole ottenere le statistiche
-     * @return restituisce le statistiche
+     * @param year Anno su cui si vuole ottenere le statistiche
+     * @return Restituisce le statistiche
      */
     public Map<String, Object> getStats(int year) {
         Map<String, Object> result = new HashMap<>();
@@ -72,8 +73,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che calcola la media su base anno
-     * @param year specifica l'anno su cui si vuole ottenere la media
-     * @return restituisce la media
+     * @param year Specifica l'anno su cui si vuole ottenere la media
+     * @return Restituisce la media
      */
     public float getAvg(int year) {
         int count = 0;
@@ -87,8 +88,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che calcola la deviazione standard su base anno
-     * @param year specifica l'anno su cui si vuole ottenere la deviazione standard
-     * @return restituisce la deviazione standard
+     * @param year Specifica l'anno su cui si vuole ottenere la deviazione standard
+     * @return Restituisce la deviazione standard
      */
     public float getDevStandard(int year) {
         float avg = getAvg(year);
@@ -103,8 +104,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che trova il valore minimo su base anno
-     * @param year specifica l'anno su cui si vuole sapere il valore minimo
-     * @return restituisce il valore minimo
+     * @param year Specifica l'anno su cui si vuole sapere il valore minimo
+     * @return Restituisce il valore minimo
      */
     public Map<String, Object> getMin(int year) {
         float currentMin = agricultureAids.get(0).getYear(year);
@@ -127,8 +128,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che trova il valore massimo su base anno
-     * @param year specifica l'anno su cui si vuole sapere il valore massimo
-     * @return restituisce il valore massimo
+     * @param year Specifica l'anno su cui si vuole sapere il valore massimo
+     * @return Restituisce il valore massimo
      */
     public Map<String, Object> getMax(int year) {
         float currentMax = agricultureAids.get(0).getYear(year);
@@ -151,8 +152,8 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che trova la somma di tutti i valori su base anno
-     * @param year specifica l'anno su cui si vuole fare la somma
-     * @return restituisce la somma
+     * @param year Specifica l'anno su cui si vuole fare la somma
+     * @return Restituisce la somma
      */
     public float getSum(int year) {
         float sum = 0;
@@ -164,10 +165,10 @@ public class AgricultureAidCollection implements Filter<AgricultureAid, Object[]
 
     /**
      * Metodo che permette di applicare i filtri specificati sulla collezione di oggettiAgricultureAid
-     * @param fieldName campo su cui vi vuole specificare la condizione di filtro
-     * @param operator condizione di filtro
-     * @param value valori che caratterizzano la condizione di filtro
-     * @return la collezione di oggetti filtrata
+     * @param fieldName Campo su cui vi vuole specificare la condizione di filtro
+     * @param operator Condizione di filtro
+     * @param value Valori che caratterizzano la condizione di filtro
+     * @return La collezione di oggetti filtrata
      */
     @Override
     public ArrayList<AgricultureAid> filterField(String fieldName, String operator, Object... value) {

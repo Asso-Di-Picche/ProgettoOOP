@@ -6,15 +6,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Classe che mette a disposizione i metodi che permettono di utilizzare la logica AND e OR
- * @param <T> tipo generico
+ * Classe che mette a disposizione dei metodi che permettono di eseguire l'intersezione e l'unione tra più ArrayList,
+ * in modo da ottenere un dato il cui risultato sia dato da una logica AND e/o OR
+ * @param <T> Tipo generico
  */
 public class ArrayListUtils<T>{
 
     /**
-     * Metodo che implementa la logica AND su un gruppo di insiemi di oggetti
-     * @param items argomento che contiene il gruppo di insiemi di oggetti
-     * @return restituisce l'insieme di oggetti comuni tra il gruppo di insiemi
+     * Metodo che implementa la logica AND su un gruppo di insiemi di oggetti, facendone l'intersezione
+     * @param items Argomento che contiene il gruppo di insiemi di oggetti
+     * @return Restituisce L'insieme di oggetti comuni tra il gruppo di insiemi
      */
     public ArrayList<T> intersection (ArrayList<ArrayList<T>> items) {
         ArrayList<T> list = new ArrayList<T>();
@@ -35,9 +36,9 @@ public class ArrayListUtils<T>{
     }
 
     /**
-     * Metodo che implementa la logica OR su un gruppo di insiemi di oggetti
-     * @param items argomento che contiene il gruppo di insiemi di oggetti
-     * @return restituisce l'insieme di oggetti complessivo dato dall'unione del gruppo di insiemi
+     * Metodo che implementa la logica OR su un gruppo di insiemi di oggetti, facendone l'unione
+     * @param items Argomento che contiene il gruppo di insiemi di oggetti
+     * @return Restituisce l'insieme di oggetti complessivo dato dall'unione del gruppo di insiemi
      */
     public ArrayList<T> union (ArrayList<ArrayList<T>> items) {
         Set<T> set = new HashSet<T>();
