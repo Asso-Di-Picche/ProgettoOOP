@@ -14,9 +14,12 @@ let FilterItem = Vue.component('filteritem', {
                     <option value="$gt">Maggiore</option>
                     <option value="$lt">Minore</option>
                     <option value="$bt">Between</option>
+                    <option value="$in">In</option>
+                    <option value="$nin">Not In</option>
                 </select>
                 <div class="form-group" v-if="filtertype != '$bt'">
-                    <label for="valore">Seleziona i valori da filtrare:</label>
+                    <label v-if="filtertype == '$in' || filtertype == '$nin'" for="valore">Seleziona i valori da filtrare, separati da una virgola:</label>
+                    <label v-else for="valore">Seleziona il valore da filtrare:</label>
                     <input v-model="val" type="text" class="form-control" id="valore" placeholder="Valore da filtrare">
                 </div>
                 <div v-else class="row">

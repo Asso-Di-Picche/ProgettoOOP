@@ -33,7 +33,7 @@ public class AgricultureAid {
     /**
      * Obiettivo dell'elemento del dataset
      */
-    @JsonPropertyDescription("Non lo so")
+    @JsonPropertyDescription("Settore a cui fanno riferimento i dati")
     private String objectiv;
 
     /**
