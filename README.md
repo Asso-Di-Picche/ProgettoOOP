@@ -135,9 +135,9 @@ I valori presenti come dato su cui eseguire il filtro possono essere delle strin
 E' inoltre possibile unire più filtri insieme, mediante l'uso di una logica AND oppure OR. Per far ciò, la struttura della richiesta è la seguente:
 
 ```
-    {
-	    "<operatore logico>": [{<filtro1>},{<filtro2>},...]
-	}
+{
+	"<operatore logico>": [{<filtro1>},{<filtro2>},...]
+}
 ```
 
 Dove l'operatore logico può assumere i valori **\$and** (nel caso di una logica in AND) e **\$or** (nel caso di una logica in OR). E' possibile eventualmente innestare tra di loro più operatori logici, inserendoli al posto di eventuali filtri. Alcuni esempi di filtri possono essere i seguenti:
@@ -212,8 +212,22 @@ Al fine di semplificare l'operazione di filtro e l'esecuzione delle statistiche,
 
 ## Use Case Diagram
 
+![](usecase.png)
+
+## Activity Diagram
+
+![](activitydiagram.png)
+
 ## Sequence Diagram
 
 Funzione che va a richiedere i dati eseguendo un filtro su questi:
 
 ![](filtroseq.png)
+
+Funzione che va a richiedere le statistiche fornendo un filtro e l'anno di interesse:
+
+![](statsyearseq.png)
+
+Funzione che va a richiedere le statistiche fornendo l'area geografica e l'unità di misura:
+
+![](statsgeoseq.png)
