@@ -90,7 +90,7 @@ Gli endpoint specificati nell'applicazione per effettuare le varie richieste son
 
 Rotta in cui è possibile accedere ad un'interfaccia grafica che permette di eseguire le operazioni di ricerca e di effettuamento delle statistiche senza la necessità di utilizzare linguaggi di programmazione e/o tool esterni quali Postman per effettuare le richieste.
 
-> **POST** /metadata
+> **GET** /metadata
 
 Rotta in cui è possibile accedere ai metadati relativi all'oggetto restituito dal servizio.
 
