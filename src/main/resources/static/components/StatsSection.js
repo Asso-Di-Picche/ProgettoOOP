@@ -61,7 +61,7 @@ let StatsSection = Vue.component('stats-section', {
 					}
 					break;
 				case '1':
-					if(!this.year) {
+					if (!this.year) {
 						this.error = "Per proseguire è necessario compilare tutti i campi!";
 					} else {
 						fetch('/stats/year/' + this.year, {
@@ -72,8 +72,8 @@ let StatsSection = Vue.component('stats-section', {
 								if (data['error']) this.error = data['error'];
 								else this.$emit('stats-submit', data, 1);
 							});
-						break;
 					}
+					break;
 				case '2':
 					let submitData = this.$children[0].getFilterData();
 					if (this.$children[0].emptyError || !this.year) {
