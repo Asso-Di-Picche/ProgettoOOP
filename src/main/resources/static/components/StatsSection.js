@@ -51,32 +51,44 @@ let StatsSection = Vue.component('stats-section', {
 			this.error = null;
 			switch (this.statChoice) {
 				case '0':
-					fetch('/stats/geo/' + this.geo + '/unit/' + this.unit).then((res) => res.json()).then((data) => {
-						if (data['error']) this.error = data['error'];
-						else this.$emit('stats-submit', data, 0);
-					});
+					if (!this.geo || !this.unit) {
+						this.error = "Per proseguire è necessario compilare tutti i campi!";
+					} else {
+						fetch('/stats/geo/' + this.geo + '/unit/' + this.unit).then((res) => res.json()).then((data) => {
+							if (data['error']) this.error = data['error'];
+							else this.$emit('stats-submit', data, 0);
+						});
+					}
 					break;
 				case '1':
-					fetch('/stats/year/' + this.year, {
-						method: 'post'
-					})
-						.then((res) => res.json())
-						.then((data) => {
-							if (data['error']) this.error = data['error'];
-							else this.$emit('stats-submit', data, 1);
-						});
-					break;
+					if(!this.year) {
+						this.error = "Per proseguire è necessario compilare tutti i campi!";
+					} else {
+						fetch('/stats/year/' + this.year, {
+							method: 'post'
+						})
+							.then((res) => res.json())
+							.then((data) => {
+								if (data['error']) this.error = data['error'];
+								else this.$emit('stats-submit', data, 1);
+							});
+						break;
+					}
 				case '2':
 					let submitData = this.$children[0].getFilterData();
-					fetch('/stats/year/' + this.year, {
-						method: 'post',
-						body: JSON.stringify(submitData)
-					})
-						.then((res) => res.json())
-						.then((data) => {
-							if (data['error']) this.error = data['error'];
-							else this.$emit('stats-submit', data, 1);
-						});
+					if (this.$children[0].emptyError || !this.year) {
+						this.error = "Per proseguire è necessario compilare tutti i campi!";
+					} else {
+						fetch('/stats/year/' + this.year, {
+							method: 'post',
+							body: JSON.stringify(submitData)
+						})
+							.then((res) => res.json())
+							.then((data) => {
+								if (data['error']) this.error = data['error'];
+								else this.$emit('stats-submit', data, 1);
+							});
+					}
 					break;
 			}
 		}

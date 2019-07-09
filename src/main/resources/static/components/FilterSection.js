@@ -17,16 +17,19 @@ let FilterSection = Vue.component('filter-section', {
 		submitFilter() {
 			this.error = null;
 			let submitData = this.$children[0].getFilterData();
-
-			fetch('/data', {
-				method: 'post',
-				body: JSON.stringify(submitData)
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					if(data['error']) this.error = data['error'];
-					else this.$emit('filter-submit', data);
-				});
+			if (this.$children[0].emptyError) {
+				this.error = "Per proseguire è necessario compilare tutti i campi!"
+			} else {
+				fetch('/data', {
+					method: 'post',
+					body: JSON.stringify(submitData)
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						if(data['error']) this.error = data['error'];
+						else this.$emit('filter-submit', data);
+					});
+			}
 		}
 	}
 });

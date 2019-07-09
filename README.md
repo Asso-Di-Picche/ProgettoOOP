@@ -4,32 +4,32 @@ L'applicazione presente nella repository è una REST API che permette di ottener
 ## Formato dei dati restituiti
 In seguito ad una richiesta al servizio viene restituito come risultato un JSON rappresentante un array di oggetti rappresentanti i dati appartenenti al dataset. Il formato dell'oggetto rappresentante il singolo elemento, nello specifico è il seguente:
 ```
-    {
-        "freq": "A",
-        "geo": "BG",
-        "unit": "MEUR_KP_PRE",
-        "objectiv": "TOTAL",
-        "aids": {
-            "2000": 0,
-            "2001": 0,
-            "2002": 0,
-            "2003": 0,
-            "2004": 0,
-            "2005": 0,
-            "2006": 0,
-            "2007": 207.151,
-            "2008": 218.413,
-            "2009": 167.885,
-            "2010": 20.427,
-            "2011": 20.644,
-            "2012": 48.445,
-            "2013": 78.83,
-            "2014": 117.345,
-            "2015": 91.009,
-            "2016": 64.292,
-            "2017": 81.049
-        }
+{
+    "freq": "A",
+    "geo": "BG",
+    "unit": "MEUR_KP_PRE",
+    "objectiv": "TOTAL",
+    "aids": {
+        "2000": 0,
+        "2001": 0,
+        "2002": 0,
+        "2003": 0,
+        "2004": 0,
+        "2005": 0,
+        "2006": 0,
+        "2007": 207.151,
+        "2008": 218.413,
+        "2009": 167.885,
+        "2010": 20.427,
+        "2011": 20.644,
+        "2012": 48.445,
+        "2013": 78.83,
+        "2014": 117.345,
+        "2015": 91.009,
+        "2016": 64.292,
+        "2017": 81.049
     }
+}
 ```
 In particolare:
  - **freq** rappresenta la frequenza del campionamento del dato
@@ -41,44 +41,44 @@ In particolare:
 Le statistiche possono invece essere effettuate soltanto sull'anno specifico oppure su un dato specifico, specificando l'area geografica e l'unità di misura. Degli esempi di oggetti JSON restituiti per entrambi i casi possono essere i seguenti:
 ```
 {
-	    "avg": 179.01416,
-	    "min": {
-	        "geo": [
-	            "MT"
-	        ],
-	        "value": 0
-	    },
-	    "field": "2016",
-	    "max": {
-	        "geo": [
-	            "DE"
-	        ],
-	        "value": 1038.131
-	    },
-	    "devstd": 235.65442,
-	    "sum": 4654.368
-    }
+    "avg": 179.01416,
+    "min": {
+        "geo": [
+            "MT"
+        ],
+        "value": 0
+    },
+    "field": "2016",
+    "max": {
+        "geo": [
+            "DE"
+        ],
+        "value": 1038.131
+    },
+    "devstd": 235.65442,
+    "sum": 4654.368
+}
 ```
 ```
-    {
-	    "geo": "IT",
-	    "unit": "MEUR_KP_PRE",
-	    "avg": 810.1978,
-	    "min": {
-	        "year": [
-	            "2002"
-	        ],
-	        "value": 392.791
-	    },
-	    "max": {
-	        "year": [
-	            "2015"
-	        ],
-	        "value": 1407.813
-	    },
-	    "devstd": 291.66656,
-	    "sum": 14583.561
-    }
+{
+    "geo": "IT",
+    "unit": "MEUR_KP_PRE",
+    "avg": 810.1978,
+    "min": {
+        "year": [
+            "2002"
+        ],
+        "value": 392.791
+    },
+    "max": {
+        "year": [
+            "2015"
+        ],
+        "value": 1407.813
+    },
+    "devstd": 291.66656,
+    "sum": 14583.561
+}
 ```
 
 Si noti come, per i due casi, si è anche scelto di memorizzare in corrispondenza di quali dati sono presenti i valori minimi e massimi.
@@ -113,11 +113,11 @@ Effettuando una richiesta GET su questa rotta, specificando l'area geografica e 
 Il filtro presente nel corpo della richiesta POST per filtrare i dati è una stringa in formato JSON, contenente degli oggetti dotati della seguente struttura:
 
 ```
-    {
-	    "<campo>": {
-		    "<operatore>": <dato>
-		}
-    }
+{
+    "<campo>": {
+	    "<operatore>": <dato>
+	}
+}
 ``` 
 
 Il campo su cui è possibile applicare il filtro è uno tra i campi già presentati sopra (geo, freq, unit, objective, 2000, 2001, ... , 2017), mentre gli operatori che è possibile utilizzare sono i seguenti:
@@ -151,20 +151,20 @@ Dove l'operatore logico può assumere i valori **\$and** (nel caso di una logica
 ```
 
 ```
-    {
-	    "$and": [
-	        {
-	            "geo": {
-	                "$nin": ["IT", "EU28", "LU"]
-	            }
-	        },
-	        {
-	        	"unit": {
-	        		"$not": "PC_GDP"
-	        	}
-	        }
-	    ]
-    }
+{
+    "$and": [
+        {
+            "geo": {
+                "$nin": ["IT", "EU28", "LU"]
+            }
+        },
+        {
+        	"unit": {
+        		"$not": "PC_GDP"
+        	}
+        }
+    ]
+}
 ```
 
 ```

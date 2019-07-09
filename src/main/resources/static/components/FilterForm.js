@@ -34,7 +34,8 @@ let FilterForm = Vue.component('filter-form', {
 			children: [ filterItem ],
 			choice: '2',
 			objToSubmit: {},
-			id: null
+			id: null,
+			emptyError: false
 		};
 	},
 	mounted() {
@@ -49,6 +50,9 @@ let FilterForm = Vue.component('filter-form', {
 		},
 		addFilterObj(child) {
 			let obj = {};
+			if (!child.filtertype || ((child.filtertype != '$bt' && !child.val) && (child.filtertype != '$bt' && (!child.minVal || !child.maxVal)))) {
+				this.emptyError = true;
+			}
 			obj[child.field] = new Object();
 			if (child.filtertype != '$bt' && child.filtertype != '$in' && child.filtertype != '$nin') {
 				obj[child.field][child.filtertype] = !isNaN(child.val) ? parseFloat(child.val) : child.val;
@@ -63,6 +67,7 @@ let FilterForm = Vue.component('filter-form', {
 			return obj;
 		},
 		getFilterData() {
+			this.emptyError = false;
 			switch (this.choice) {
 				case '0':
 					this.objToSubmit = new Object();
